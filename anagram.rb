@@ -1,26 +1,26 @@
 class Anagram
-  def initialize(word)
-    @word = word
+  def initialize(string)
+    @string = string
   end
 
-  attr_reader :word
+  attr_reader :string
 
-  def match(words)
-    words.grep(self)
+  def match(strings)
+    Array(strings).grep(self)
   end
 
-  def ===(anagram)
-    self == anagram && normalized != Anagram(anagram).normalized
+  def ===(other)
+    self == other && normalized != Anagram(other).normalized
   end
 
-  def ==(anagram)
-    sorted == Anagram(anagram).sorted
+  def ==(other)
+    sorted == Anagram(other).sorted
   end
 
   protected
 
   def normalized
-    @normalized ||= word.downcase
+    @normalized ||= string.downcase
   end
 
   def sorted
