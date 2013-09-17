@@ -1,34 +1,27 @@
 class Anagram
+  attr_reader :string
+
   def initialize(string)
     @string = string
   end
 
-  attr_reader :string
-
   def match(strings)
-    Array(strings).grep(self)
+    reject_identical(strings).select { |other|
+      char_counts(string) == char_counts(other)
+    }
   end
 
-  def ===(other)
-    self == other && normalized != Anagram(other).normalized
+  private
+
+  def char_counts(string)
+    string.downcase.chars.each_with_object(Hash.new(0)) do |char, hash|
+      hash[char] += 1
+    end
   end
 
-  def ==(other)
-    sorted == Anagram(other).sorted
+  def reject_identical(strings)
+    strings.reject { |other|
+      other.downcase == string.downcase
+    }
   end
-
-  protected
-
-  def normalized
-    @normalized ||= string.downcase
-  end
-
-  def sorted
-    @sorted ||= normalized.chars.sort
-  end
-end
-
-def Anagram(arg)
-  return arg if arg.is_a?(Anagram)
-  Anagram.new(arg.to_str)
 end
